@@ -4,16 +4,16 @@
 ## Loading and preprocessing the data
 
 ```r
-     x <- read.csv("activity.csv")
-     y <- aggregate(x$steps,by=list(x$date),sum)
-     colnames(y) <- c("Date","Steps")
+     x <- read.csv("activity.csv") #code for reading data
+     y <- aggregate(x$steps,by=list(x$date),sum) #code for processing data
+     colnames(y) <- c("Date","Steps") #assigning column names
 ```
 
 
 ## What is mean total number of steps taken per day?
 
 ```r
-     y
+     y #show data after processing
 ```
 
 ```
@@ -82,13 +82,13 @@
 ```
 
 ```r
-     hist(y$Steps)
+     hist(y$Steps) #histogram
 ```
 
 ![](PA1_template_files/figure-html/calculateMeanMedian-1.png) 
 
 ```r
-     mean(y$Steps, na.rm = TRUE)
+     mean(y$Steps, na.rm = TRUE) #calculate mean
 ```
 
 ```
@@ -96,7 +96,7 @@
 ```
 
 ```r
-     median(y$Steps, na.rm = TRUE)
+     median(y$Steps, na.rm = TRUE) #calculate median
 ```
 
 ```
@@ -116,7 +116,7 @@
 ![](PA1_template_files/figure-html/dailypatter-1.png) 
 
 ```r
-     summary(z)
+     summary(z) #getting the maximum step per 5-minute interval
 ```
 
 ```
@@ -132,7 +132,7 @@
 ## Imputing missing values
 
 ```r
-     z[,2]
+     z[,2] #before
 ```
 
 ```
@@ -150,7 +150,7 @@
 ```
 
 ```r
-     length(z[,2][is.na(z[,2])])
+     length(z[,2][is.na(z[,2])]) #identifying the number of NA data
 ```
 
 ```
@@ -158,8 +158,8 @@
 ```
 
 ```r
-     z[,2][is.na(z[,2])]<-mean(z$AvgSteps,na.rm = TRUE)
-     z[,2]
+     z[,2][is.na(z[,2])]<-mean(z$AvgSteps,na.rm = TRUE) #imput missing data strategy
+     z[,2] #after
 ```
 
 ```
@@ -176,12 +176,18 @@
 ## [61] 37.3825996
 ```
 
+```r
+     hist(z[,2]) #histgram after missing imput data
+```
+
+![](PA1_template_files/figure-html/countNAs-1.png) 
+
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
 
 ```r
-     z$Date <- weekdays(as.Date(z$Date))
+     z$Date <- weekdays(as.Date(z$Date)) #classifiying data to weekend and weekday
      z[,1][z[,1]=="Monday"]<-"Weekday"
      z[,1][z[,1]=="Tuesday"]<-"Weekday"
      z[,1][z[,1]=="Wednesday"]<-"Weekday"
@@ -203,13 +209,13 @@
 ```
 
 ```r
-     plot(z$AvgSteps,z$Date=="Weekend")
+     plot(z$AvgSteps,z$Date=="Weekend") #plot across weekend
 ```
 
 ![](PA1_template_files/figure-html/activitypattern-1.png) 
 
 ```r
-     plot(z$AvgSteps,z$Date=="Weekday")
+     plot(z$AvgSteps,z$Date=="Weekday") #plot across weekday
 ```
 
 ![](PA1_template_files/figure-html/activitypattern-2.png) 

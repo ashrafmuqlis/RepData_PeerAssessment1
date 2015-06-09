@@ -8,19 +8,19 @@ output:
 
 ## Loading and preprocessing the data
 ```{r readdata, echo=TRUE}
-     x <- read.csv("activity.csv")
-     y <- aggregate(x$steps,by=list(x$date),sum)
-     colnames(y) <- c("Date","Steps")
+     x <- read.csv("activity.csv") #code for reading data
+     y <- aggregate(x$steps,by=list(x$date),sum) #code for processing data
+     colnames(y) <- c("Date","Steps") #assigning column names
      
 ```
 
 
 ## What is mean total number of steps taken per day?
 ```{r calculateMeanMedian, echo=TRUE}
-     y
-     hist(y$Steps)
-     mean(y$Steps, na.rm = TRUE)
-     median(y$Steps, na.rm = TRUE)
+     y #show data after processing
+     hist(y$Steps) #histogram
+     mean(y$Steps, na.rm = TRUE) #calculate mean
+     median(y$Steps, na.rm = TRUE) #calculate median
 ```
 
 
@@ -30,14 +30,15 @@ output:
      colnames(z) <- c("Date","AvgSteps")
 
      plot(z,type = "l")
-     summary(z)
+     summary(z) #getting the maximum step per 5-minute interval
 ```
 ## Imputing missing values
 ```{r countNAs,echo=TRUE}
-     z[,2]
-     length(z[,2][is.na(z[,2])])
-     z[,2][is.na(z[,2])]<-mean(z$AvgSteps,na.rm = TRUE)
-     z[,2]
+     z[,2] #before
+     length(z[,2][is.na(z[,2])]) #identifying the number of NA data
+     z[,2][is.na(z[,2])]<-mean(z$AvgSteps,na.rm = TRUE) #imput missing data strategy
+     z[,2] #after
+     hist(z[,2]) #histgram after missing imput data
 
 ```
 
@@ -45,7 +46,7 @@ output:
 ## Are there differences in activity patterns between weekdays and weekends?
 
 ```{r activitypattern, echo=TRUE}
-     z$Date <- weekdays(as.Date(z$Date))
+     z$Date <- weekdays(as.Date(z$Date)) #classifiying data to weekend and weekday
      z[,1][z[,1]=="Monday"]<-"Weekday"
      z[,1][z[,1]=="Tuesday"]<-"Weekday"
      z[,1][z[,1]=="Wednesday"]<-"Weekday"
@@ -54,8 +55,8 @@ output:
      z[,1][z[,1]=="Saturday"]<-"Weekend"
      z[,1][z[,1]=="Sunday"]<-"Weekend"
      summary(z)
-     plot(z$AvgSteps,z$Date=="Weekend")
-     plot(z$AvgSteps,z$Date=="Weekday")
+     plot(z$AvgSteps,z$Date=="Weekend") #plot across weekend
+     plot(z$AvgSteps,z$Date=="Weekday") #plot across weekday
 
 ```
 
