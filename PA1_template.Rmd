@@ -7,19 +7,55 @@ output:
 
 
 ## Loading and preprocessing the data
-
+```{r readdata, echo=TRUE}
+     x <- read.csv("activity.csv")
+     y <- aggregate(x$steps,by=list(x$date),sum)
+     colnames(y) <- c("Date","Steps")
+     
+```
 
 
 ## What is mean total number of steps taken per day?
-
+```{r calculateMeanMedian, echo=TRUE}
+     y
+     hist(y$Steps)
+     mean(y$Steps, na.rm = TRUE)
+     median(y$Steps, na.rm = TRUE)
+```
 
 
 ## What is the average daily activity pattern?
+```{r dailypatter, echo=TRUE}
+     z <- aggregate(x$steps,by=list(x$date),mean)
+     colnames(z) <- c("Date","AvgSteps")
 
-
-
+     plot(z,type = "l")
+     summary(z)
+```
 ## Imputing missing values
+```{r countNAs,echo=TRUE}
+     z[,2]
+     length(z[,2][is.na(z[,2])])
+     z[,2][is.na(z[,2])]<-mean(z$AvgSteps,na.rm = TRUE)
+     z[,2]
 
+```
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+```{r activitypattern, echo=TRUE}
+     z$Date <- weekdays(as.Date(z$Date))
+     z[,1][z[,1]=="Monday"]<-"Weekday"
+     z[,1][z[,1]=="Tuesday"]<-"Weekday"
+     z[,1][z[,1]=="Wednesday"]<-"Weekday"
+     z[,1][z[,1]=="Thursday"]<-"Weekday"
+     z[,1][z[,1]=="Friday"]<-"Weekday"
+     z[,1][z[,1]=="Saturday"]<-"Weekend"
+     z[,1][z[,1]=="Sunday"]<-"Weekend"
+     summary(z)
+     plot(z$AvgSteps,z$Date=="Weekend")
+     plot(z$AvgSteps,z$Date=="Weekday")
+
+```
+
